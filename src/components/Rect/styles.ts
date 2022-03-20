@@ -12,6 +12,47 @@ export const RectBlock = styled.div<size>`
   `}
 
   &:hover {
-    border: 2px solid CornflowerBlue;
+    /* border: 1px solid CornflowerBlue; */
+    outline: 1px solid cornflowerblue;
+  }
+`;
+
+export const Resizers = styled.div`
+  width: 100%;
+  height: 100%;
+  border: 1px solid cornflowerblue;
+  position: relative;
+`;
+
+export const Resizer = styled.div`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid cornflowerblue;
+  position: absolute;
+
+  &.top-left {
+    top: -5px;
+    left: -5px;
+    cursor: nw-resize;
+  }
+
+  &.top-right {
+    top: -5px;
+    right: -5px;
+    cursor: ne-resize;
+  }
+
+  &.bottom-right {
+    bottom: -5px;
+    right: -5px;
+    cursor: se-resize;
+  }
+
+  &.bottom-left {
+    bottom: -5px;
+    left: -5px;
+    cursor: sw-resize;
   }
 `;

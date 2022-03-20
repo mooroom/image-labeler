@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as S from "./styles";
 
 interface Props {
@@ -8,8 +8,28 @@ interface Props {
   height: number;
 }
 
-function Rect({ x, y, width, height }: Props) {
-  return <S.RectBlock x={x} y={y} width={width} height={height} />;
+function Rect(props: Props) {
+  const [resizable, setResizable] = useState(false);
+
+  const handleMouseDown = (e: React.MouseEvent) => {};
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setResizable(true);
+  };
+
+  return (
+    <S.RectBlock {...props} onClick={handleClick}>
+      {resizable && (
+        <S.Resizers>
+          <S.Resizer className="top-left" onMouseDown={handleMouseDown} />
+          <S.Resizer className="top-right" onMouseDown={handleMouseDown} />
+          <S.Resizer className="bottom-right" onMouseDown={handleMouseDown} />
+          <S.Resizer className="bottom-left" onMouseDown={handleMouseDown} />
+        </S.Resizers>
+      )}
+    </S.RectBlock>
+  );
 }
 
 export default Rect;

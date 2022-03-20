@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
+import { v4 } from "uuid";
+
 import Rect from "../Rect";
 import * as S from "./styles";
 
 type RectType = {
+  id: string;
   x: number;
   y: number;
   width: number;
@@ -12,7 +15,7 @@ type RectType = {
 const blankState = { x: 0, y: 0, width: 0, height: 0 };
 
 function Canvas() {
-  const [rectGuide, setRectGuide] = useState<RectType>(blankState);
+  const [rectGuide, setRectGuide] = useState(blankState);
   const [rects, setRects] = useState<RectType[]>([]);
   const [clientCoordinate, setClientCoordinate] = useState({ top: 0, left: 0 });
 
@@ -57,6 +60,7 @@ function Canvas() {
       const height = mouseY - startY;
 
       const newRect = {
+        id: v4(),
         x: startX,
         y: startY,
         width: width,
@@ -85,9 +89,11 @@ function Canvas() {
           }}
         />
       )}
-      {rects.map((rect) => (
-        <Rect {...rect} />
-      ))}
+      <S.RectLayer id="rectLayer">
+        {rects.map((rect) => (
+          <Rect key={rect.id} {...rect} />
+        ))}
+      </S.RectLayer>
     </S.Canvas>
   );
 }
