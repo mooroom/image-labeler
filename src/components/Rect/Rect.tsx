@@ -1,14 +1,12 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../modules";
+import { focusRect } from "../../modules/rects";
+import { RectType } from "../../types/rect";
 import * as S from "./styles";
 
-type Props = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
-
-function Rect(props: Props) {
+function Rect({ id, isFocused, x, y, width, height }: RectType) {
+  const dispatch = useDispatch();
   const [resizable, setResizable] = useState(false);
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -17,12 +15,19 @@ function Rect(props: Props) {
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
+    dispatch(focusRect(id));
     setResizable(true);
   };
 
   return (
-    <S.RectBlock {...props} onClick={handleClick}>
-      {resizable && (
+    <S.RectBlock
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      onClick={handleClick}
+    >
+      {isFocused && (
         <S.Resizers>
           <S.Resizer className="top-left" onMouseDown={handleMouseDown} />
           <S.Resizer className="top-right" onMouseDown={handleMouseDown} />

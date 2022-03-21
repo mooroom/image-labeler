@@ -7,7 +7,7 @@ import * as S from "./styles";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCoord } from "../../modules/canvasCoordinate";
-import { createRect } from "../../modules/rects";
+import { createRect, focusRect } from "../../modules/rects";
 
 // types
 import { RootState } from "../../modules";
@@ -71,6 +71,7 @@ function Canvas() {
         };
 
         dispatch(createRect(newRect));
+        dispatch(focusRect(newRect.id));
       }
 
       setRectGuide(blankState);
