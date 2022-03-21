@@ -1,17 +1,19 @@
 import React, { useState } from "react";
 import * as S from "./styles";
 
-interface Props {
+type Props = {
   x: number;
   y: number;
   width: number;
   height: number;
-}
+};
 
 function Rect(props: Props) {
   const [resizable, setResizable] = useState(false);
 
-  const handleMouseDown = (e: React.MouseEvent) => {};
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();

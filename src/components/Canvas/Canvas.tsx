@@ -4,20 +4,21 @@ import { v4 } from "uuid";
 import Rect from "../Rect";
 import * as S from "./styles";
 
-type RectType = {
-  id: string;
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { setCoord } from "../../modules/canvasCoordinate";
+import { createRect } from "../../modules/rects";
+
+// types
+import { RootState } from "../../modules";
 
 const blankState = { x: 0, y: 0, width: 0, height: 0 };
 
 function Canvas() {
+  const { rects, canvasCoordinate } = useSelector((state: RootState) => state);
+  const dispatch = useDispatch();
+
   const [rectGuide, setRectGuide] = useState(blankState);
-  const [rects, setRects] = useState<RectType[]>([]);
-  const [clientCoordinate, setClientCoordinate] = useState({ top: 0, left: 0 });
 
   // refs
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -28,46 +29,48 @@ function Canvas() {
     const setCanvasOffset = () => {
       const canvasOffset = canvasRef.current?.getBoundingClientRect();
       if (canvasOffset) {
-        console.log(canvasOffset.left);
-        setClientCoordinate({ top: canvasOffset.top, left: canvasOffset.left });
+        dispatch(setCoord(canvasOffset.top, canvasOffset.left));
       }
     };
 
     window.addEventListener("resize", setCanvasOffset);
 
     setCanvasOffset();
-  }, []);
+  }, [dispatch]);
 
   // draw Rect
   const handleMouseDown = (e: React.MouseEvent) => {
     const $canvas = canvasRef.current;
-    const startX = e.clientX - clientCoordinate.left;
-    const startY = e.clientY - clientCoordinate.top;
+    const startX = e.clientX - canvasCoordinate.left;
+    const startY = e.clientY - canvasCoordinate.top;
     isDrawing.current = true;
     setRectGuide({ x: startX, y: startY, width: 0, height: 0 });
 
     const drawRect = (e: MouseEvent) => {
-      const mouseX = e.clientX - clientCoordinate.left;
-      const mouseY = e.clientY - clientCoordinate.top;
+      const mouseX = e.clientX - canvasCoordinate.left;
+      const mouseY = e.clientY - canvasCoordinate.top;
       const width = mouseX - startX;
       const height = mouseY - startY;
       setRectGuide({ x: startX, y: startY, width: width, height: height });
     };
     const stopDrawRect = (e: MouseEvent) => {
-      const mouseX = e.clientX - clientCoordinate.left;
-      const mouseY = e.clientY - clientCoordinate.top;
+      const mouseX = e.clientX - canvasCoordinate.left;
+      const mouseY = e.clientY - canvasCoordinate.top;
       const width = mouseX - startX;
       const height = mouseY - startY;
 
-      const newRect = {
-        id: v4(),
-        x: startX,
-        y: startY,
-        width: width,
-        height: height,
-      };
+      if (width !== 0 && height !== 0) {
+        const newRect = {
+          id: v4(),
+          x: startX,
+          y: startY,
+          width: width,
+          height: height,
+        };
 
-      setRects([...rects, newRect]);
+        dispatch(createRect(newRect));
+      }
+
       setRectGuide(blankState);
       $canvas?.removeEventListener("mousemove", drawRect);
       $canvas?.removeEventListener("mouseup", stopDrawRect);
