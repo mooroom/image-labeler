@@ -25,34 +25,33 @@ export const Resizers = styled.div`
 `;
 
 export const Resizer = styled.div`
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
+  width: 8px;
+  height: 8px;
   background: white;
   border: 1px solid cornflowerblue;
   position: absolute;
 
   &.top-left {
-    top: -5px;
-    left: -5px;
+    top: -4px;
+    left: -4px;
     cursor: nw-resize;
   }
 
   &.top-right {
-    top: -5px;
-    right: -5px;
+    top: -4px;
+    right: -4px;
     cursor: ne-resize;
   }
 
   &.bottom-right {
-    bottom: -5px;
-    right: -5px;
+    bottom: -4px;
+    right: -4px;
     cursor: se-resize;
   }
 
   &.bottom-left {
-    bottom: -5px;
-    left: -5px;
+    bottom: -4px;
+    left: -4px;
     cursor: sw-resize;
   }
 `;

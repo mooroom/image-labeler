@@ -11,6 +11,7 @@ import { createRect } from "../../modules/rects";
 
 // types
 import { RootState } from "../../modules";
+import { RectType } from "../../types/rect";
 
 const blankState = { x: 0, y: 0, width: 0, height: 0 };
 
@@ -60,8 +61,9 @@ function Canvas() {
       const height = mouseY - startY;
 
       if (width !== 0 && height !== 0) {
-        const newRect = {
+        const newRect: RectType = {
           id: v4(),
+          isFocused: true,
           x: startX,
           y: startY,
           width: width,
