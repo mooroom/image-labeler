@@ -35,11 +35,11 @@ function Rect({ id, isFocused, x, y, width, height }: RectType) {
       className="rect"
     >
       {isFocused && (
-        <S.Resizers>
-          <S.Resizer className="top-left" onMouseDown={handleMouseDown} />
-          <S.Resizer className="top-right" onMouseDown={handleMouseDown} />
-          <S.Resizer className="bottom-right" onMouseDown={handleMouseDown} />
-          <S.Resizer className="bottom-left" onMouseDown={handleMouseDown} />
+        <S.Resizers onMouseDown={handleMouseDown}>
+          <S.Resizer className="top-left" />
+          <S.Resizer className="top-right" />
+          <S.Resizer className="bottom-right" />
+          <S.Resizer className="bottom-left" />
         </S.Resizers>
       )}
     </S.RectBlock>

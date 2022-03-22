@@ -27,41 +27,41 @@ export const handleResize = (
   const startY = e.clientY;
 
   const topLeft = ({ mouseX, mouseY }: MousePos) => {
-    const width = original.width - (mouseX - startX);
-    const height = original.height - (mouseY - startY);
+    const dx = mouseX - startX;
+    const dy = mouseY - startY;
+    const width = original.width - dx;
+    const height = original.height - dy;
 
     if (width > minimum_size) {
-      $rect.style.left = `${
-        original.x + (mouseX - startX) - canvasCoordinate.left
-      }px`;
+      $rect.style.left = `${original.x + dx - canvasCoordinate.left}px`;
       $rect.style.width = `${width}px`;
     }
 
     if (height > minimum_size) {
-      $rect.style.top = `${
-        original.y + (mouseY - startY) - canvasCoordinate.top
-      }px`;
+      $rect.style.top = `${original.y + dy - canvasCoordinate.top}px`;
       $rect.style.height = `${height}px`;
     }
   };
   const topRight = ({ mouseX, mouseY }: MousePos) => {
-    const width = original.width + (mouseX - startX);
-    const height = original.height - (mouseY - startY);
+    const dx = mouseX - startX;
+    const dy = mouseY - startY;
+    const width = original.width + dx;
+    const height = original.height - dy;
 
     if (width > minimum_size) {
       $rect.style.width = `${width}px`;
     }
 
     if (height > minimum_size) {
-      $rect.style.top = `${
-        original.y + (mouseY - startY) - canvasCoordinate.top
-      }px`;
+      $rect.style.top = `${original.y + dy - canvasCoordinate.top}px`;
       $rect.style.height = `${height}px`;
     }
   };
   const bottomRight = ({ mouseX, mouseY }: MousePos) => {
-    const width = original.width + (mouseX - startX);
-    const height = original.height + (mouseY - startY);
+    const dx = mouseX - startX;
+    const dy = mouseY - startY;
+    const width = original.width + dx;
+    const height = original.height + dy;
 
     if (width > minimum_size) {
       $rect.style.width = `${width}px`;
@@ -72,19 +72,25 @@ export const handleResize = (
     }
   };
   const bottomLeft = ({ mouseX, mouseY }: MousePos) => {
-    const width = original.width - (mouseX - startX);
-    const height = original.height + (mouseY - startY);
+    const dx = mouseX - startX;
+    const dy = mouseY - startY;
+    const width = original.width - dx;
+    const height = original.height + dy;
 
     if (width > minimum_size) {
-      $rect.style.left = `${
-        original.x + (mouseX - startX) - canvasCoordinate.left
-      }px`;
+      $rect.style.left = `${original.x + dx - canvasCoordinate.left}px`;
       $rect.style.width = `${width}px`;
     }
 
     if (height > minimum_size) {
       $rect.style.height = `${height}px`;
     }
+  };
+  const drag = ({ mouseX, mouseY }: MousePos) => {
+    const dx = mouseX - startX;
+    const dy = mouseY - startY;
+    $rect.style.left = `${original.x + dx - canvasCoordinate.left}px`;
+    $rect.style.top = `${original.y + dy - canvasCoordinate.top}px`;
   };
 
   const resize = (e: MouseEvent) => {
@@ -97,7 +103,7 @@ export const handleResize = (
     } else if (target.classList.contains("bottom-left")) {
       bottomLeft({ mouseX: e.clientX, mouseY: e.clientY });
     } else {
-      throw new Error("please select any other resizer");
+      drag({ mouseX: e.clientX, mouseY: e.clientY });
     }
   };
 
