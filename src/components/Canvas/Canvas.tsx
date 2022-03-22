@@ -71,7 +71,6 @@ function Canvas() {
         };
 
         dispatch(createRect(newRect));
-        dispatch(focusRect(newRect.id));
       }
 
       setRectGuide(blankState);

@@ -25,7 +25,11 @@ function rects(
 ): RectsState {
   switch (action.type) {
     case CREATE_RECT:
-      return [...state, action.newRect];
+      return [...state, action.newRect].map((rect) =>
+        rect.id !== action.newRect.id
+          ? { ...rect, isFocused: false }
+          : action.newRect
+      );
     case FOCUS_RECT:
       return state.map((rect) =>
         rect.id === action.id
