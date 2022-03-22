@@ -1,6 +1,6 @@
 # Simple Image Labeler
 
-<h3>fetures</h3>
+<h3>features</h3>
 <ul>
   <li>사각형 그리기</li>
   <li>사각형 크기 조절(리사이징)</li>
