@@ -1,22 +1,27 @@
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../modules";
 import { focusRect } from "../../modules/rects";
 import { RectType } from "../../types/rect";
 import * as S from "./styles";
+import { handleResize } from "./utils";
 
 function Rect({ id, isFocused, x, y, width, height }: RectType) {
   const dispatch = useDispatch();
-  const [resizable, setResizable] = useState(false);
+  const canvasCoordinate = useSelector(
+    (state: RootState) => state.canvasCoordinate
+  );
+
+  const rectRef = useRef<HTMLDivElement>(null);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation();
+    handleResize(e, rectRef, canvasCoordinate);
   };
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     dispatch(focusRect(id));
-    setResizable(true);
   };
 
   return (
@@ -26,6 +31,8 @@ function Rect({ id, isFocused, x, y, width, height }: RectType) {
       width={width}
       height={height}
       onClick={handleClick}
+      ref={rectRef}
+      className="rect"
     >
       {isFocused && (
         <S.Resizers>

@@ -7,7 +7,7 @@ import * as S from "./styles";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCoord } from "../../modules/canvasCoordinate";
-import { createRect, focusRect } from "../../modules/rects";
+import { createRect } from "../../modules/rects";
 
 // types
 import { RootState } from "../../modules";

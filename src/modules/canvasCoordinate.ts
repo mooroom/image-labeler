@@ -7,7 +7,7 @@ export const setCoord = (top: number, left: number) => ({
 
 type CanvasCoordAction = ReturnType<typeof setCoord>;
 
-type CanvasCoordState = {
+export type CanvasCoordState = {
   top: number;
   left: number;
 };
