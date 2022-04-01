@@ -10,4 +10,5 @@
   <li>...기능 추가중</li>
 </ul>
 
-![ezgif com-gif-maker](https://user-images.githubusercontent.com/61869246/161208839-84b835d8-94b6-473d-a2f1-6ad6d662210f.gif)
+![ezgif com-gif-maker (1)](https://user-images.githubusercontent.com/61869246/161209630-60bc82e6-1cd1-41ff-bfd8-9e0de7ccdd50.gif)
+
