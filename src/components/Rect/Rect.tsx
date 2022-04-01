@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../modules";
 import { focusRect } from "../../modules/rects";
@@ -24,6 +24,13 @@ function Rect({ id, isFocused, x, y, width, height }: RectType) {
     dispatch(focusRect(id));
   };
 
+  const [name, setName] = useState("이름을 입력");
+  const [show, setShow] = useState(false);
+
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    setShow(true);
+  };
+
   return (
     <S.RectBlock
       x={x}
@@ -34,7 +41,21 @@ function Rect({ id, isFocused, x, y, width, height }: RectType) {
       ref={rectRef}
       className="rect"
     >
-      <div style={{ position: "absolute", top: -20 }}>sdff</div>
+      <div
+        style={{ position: "absolute", top: -20 }}
+        onDoubleClick={handleDoubleClick}
+      >
+        {show && (
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onKeyUp={(e) => e.stopPropagation()}
+            onBlur={() => setShow(false)}
+          />
+        )}
+        {!show && <span>{name}</span>}
+      </div>
       {isFocused && (
         <S.Resizers onMouseDown={handleMouseDown}>
           <S.Resizer className="top-left" />

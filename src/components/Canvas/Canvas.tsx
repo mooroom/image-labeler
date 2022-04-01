@@ -7,7 +7,7 @@ import * as S from "./styles";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCoord } from "../../modules/canvasCoordinate";
-import { createRect, removeRect } from "../../modules/rects";
+import { createRect, focusOut, removeRect } from "../../modules/rects";
 
 // types
 import { RootState } from "../../modules";
@@ -38,25 +38,13 @@ function Canvas() {
     setCanvasOffset();
   }, [dispatch]);
 
-  const remove = useCallback(
-    (e: KeyboardEvent) => {
-      console.log("sdf");
-      if (e.key === "Backspace") {
-        const focused = rects.find((rect) => rect.isFocused === true);
-        console.log(focused);
-        if (focused) dispatch(removeRect(focused.id));
-      }
-    },
-    [dispatch, rects]
-  );
-
-  useEffect(() => {
-    window.addEventListener("keyup", remove);
-    return () => window.removeEventListener("keyup", remove);
-  }, [remove]);
-
   // draw Rect
   const handleMouseDown = (e: React.MouseEvent) => {
+    // 캔버스 클릭시 사각형 포커스 해제
+    if (e.target === e.currentTarget) {
+      dispatch(focusOut());
+    }
+
     const $canvas = canvasRef.current;
     const startX = e.clientX - canvasCoordinate.left;
     const startY = e.clientY - canvasCoordinate.top;
@@ -76,7 +64,8 @@ function Canvas() {
       const width = mouseX - startX;
       const height = mouseY - startY;
 
-      if (width !== 0 && height !== 0) {
+      // minimum 10 x 10
+      if (width >= 10 && height >= 10) {
         const newRect: RectType = {
           id: v4(),
           isFocused: true,
@@ -98,6 +87,23 @@ function Canvas() {
     $canvas?.addEventListener("mouseup", stopDrawRect);
   };
 
+  // remove rect
+  const remove = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === "Backspace") {
+        const focused = rects.find((rect) => rect.isFocused === true);
+        console.log(focused);
+        if (focused) dispatch(removeRect(focused.id));
+      }
+    },
+    [dispatch, rects]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keyup", remove);
+    return () => document.removeEventListener("keyup", remove);
+  }, [remove]);
+
   return (
     <S.Canvas ref={canvasRef} onMouseDown={handleMouseDown}>
       {rectGuide !== blankState && (
@@ -110,11 +116,9 @@ function Canvas() {
           }}
         />
       )}
-      <S.RectLayer id="rectLayer">
-        {rects.map((rect) => (
-          <Rect key={rect.id} {...rect} />
-        ))}
-      </S.RectLayer>
+      {rects.map((rect) => (
+        <Rect key={rect.id} {...rect} />
+      ))}
     </S.Canvas>
   );
 }
