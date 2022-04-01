@@ -2,6 +2,7 @@ import { RectType } from "../types/rect";
 
 export const CREATE_RECT = "CREATE_RECT" as const;
 export const FOCUS_RECT = "FOCUS_RECT" as const;
+export const REMOVE_RECT = "REMOVE_RECT" as const;
 
 export const createRect = (newRect: RectType) => ({
   type: CREATE_RECT,
@@ -13,7 +14,15 @@ export const focusRect = (id: string) => ({
   id,
 });
 
-type RectsAction = ReturnType<typeof createRect> | ReturnType<typeof focusRect>;
+export const removeRect = (id: string) => ({
+  type: REMOVE_RECT,
+  id,
+});
+
+type RectsAction =
+  | ReturnType<typeof createRect>
+  | ReturnType<typeof focusRect>
+  | ReturnType<typeof removeRect>;
 
 type RectsState = RectType[];
 
@@ -36,6 +45,8 @@ function rects(
           ? { ...rect, isFocused: true }
           : { ...rect, isFocused: false }
       );
+    case REMOVE_RECT:
+      return state.filter((rect) => rect.id !== action.id);
     default:
       return state;
   }

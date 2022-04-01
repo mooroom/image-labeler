@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { v4 } from "uuid";
 
 import Rect from "../Rect";
@@ -7,7 +7,7 @@ import * as S from "./styles";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { setCoord } from "../../modules/canvasCoordinate";
-import { createRect } from "../../modules/rects";
+import { createRect, removeRect } from "../../modules/rects";
 
 // types
 import { RootState } from "../../modules";
@@ -34,10 +34,26 @@ function Canvas() {
       }
     };
 
-    window.addEventListener("resize", setCanvasOffset);
-
+    document.addEventListener("resize", setCanvasOffset);
     setCanvasOffset();
   }, [dispatch]);
+
+  const remove = useCallback(
+    (e: KeyboardEvent) => {
+      console.log("sdf");
+      if (e.key === "Backspace") {
+        const focused = rects.find((rect) => rect.isFocused === true);
+        console.log(focused);
+        if (focused) dispatch(removeRect(focused.id));
+      }
+    },
+    [dispatch, rects]
+  );
+
+  useEffect(() => {
+    window.addEventListener("keyup", remove);
+    return () => window.removeEventListener("keyup", remove);
+  }, [remove]);
 
   // draw Rect
   const handleMouseDown = (e: React.MouseEvent) => {

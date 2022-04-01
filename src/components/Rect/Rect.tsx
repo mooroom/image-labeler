@@ -34,6 +34,7 @@ function Rect({ id, isFocused, x, y, width, height }: RectType) {
       ref={rectRef}
       className="rect"
     >
+      <div style={{ position: "absolute", top: -20 }}>sdff</div>
       {isFocused && (
         <S.Resizers onMouseDown={handleMouseDown}>
           <S.Resizer className="top-left" />
