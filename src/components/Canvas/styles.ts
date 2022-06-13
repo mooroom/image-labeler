@@ -1,10 +1,15 @@
 import styled from "styled-components";
+import sampleImg from "../../img/sample.jpeg";
 
 export const Canvas = styled.div`
   width: 600px;
   height: 600px;
   background: white;
   position: relative;
+  background-image: url(${sampleImg});
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 `;
 
 export const RectGuide = styled.div`
